@@ -1,0 +1,17 @@
+{
+  "name": "webstack",
+  "version": "1.0.0",
+  "description": "Simple node.js Webstack",
+  "main": "index.js",
+  "author": "syall",
+  "license": "MIT",
+  "scripts": {
+    "dev": "nodemon index.js"
+  },
+  "dependencies": {
+    "dotenv": "^8.2.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.2"
+  }
+}
