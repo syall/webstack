@@ -1,20 +1,20 @@
 class SimpleRouter {
 
     constructor(server) {
-        this.server = server;
+        this.server = server._server;
         this.middle = [];
-        this.server.routes = [];
-        this.server._server.on('request', (req, res) => {
+        this.routes = [];
+        this.server.on('request', async (req, res) => {
             for (const mw of this.middle)
                 mw(req, res);
-            for (const [pattern, fn] of this.server.routes)
-                if (pattern.exec(req.url))
-                    return fn(req, res);
+            for (const [regex, handler] of this.routes)
+                if (regex.exec(req.url))
+                    handler(req, res);
         });
     }
 
     add(r, handler) {
-        this.server.routes.push([new RegExp(r), handler]);
+        this.routes.push([new RegExp(r), handler]);
     }
 
     use(mw) {
