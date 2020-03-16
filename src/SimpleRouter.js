@@ -5,11 +5,14 @@ class SimpleRouter {
         this.middle = [];
         this.routes = [];
         this.server.on('request', async (req, res) => {
-            for (const mw of this.middle)
-                mw(req, res);
-            for (const [regex, handler] of this.routes)
-                if (regex.exec(req.url))
-                    handler(req, res);
+            const data = [];
+            req.on('data', chunk => data.push(chunk));
+            req.on('end', _ => {
+                req.data = data;
+                for (const [regex, handler] of this.routes)
+                    if (regex.exec(req.url))
+                        handler(req, res);
+            });
         });
     }
 

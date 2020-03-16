@@ -1,6 +1,5 @@
 const SimpleServer = require('./src/SimpleServer');
 const SimpleRouter = require('./src/SimpleRouter');
-const { bodyParser } = require('./src/SimpleMiddle');
 const { handleSignals } = require('./src/utils');
 
 // Dot Env
@@ -12,16 +11,16 @@ const server = new SimpleServer(config);
 // Router
 const router = new SimpleRouter(server);
 
-// Middleware
-router.use(bodyParser);
-
 // Health and Ping Check
 router.add('^/(health|ping)$', (_, res) => res.end());
 
 // Index Route
 router.add('^/$', (req, res) => res
     .writeHead(200, { 'Content-Type': 'application/json' })
-    .end(req.body ? req.body : 'no data'));
+    .end(req.data.length === 0
+        ? 'no data'
+        : JSON.stringify(JSON.parse(req.data))));
+
 
 // Not Found
 router.add('/', (_, res) => res.writeHead(404).end());
