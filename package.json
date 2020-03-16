@@ -6,7 +6,8 @@
   "author": "syall",
   "license": "MIT",
   "scripts": {
-    "dev": "nodemon index.js"
+    "dev": "nodemon -x 'clear;node' index.js",
+    "start": "node index.js"
   },
   "dependencies": {
     "dotenv": "^8.2.0"

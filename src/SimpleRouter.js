@@ -2,8 +2,11 @@ class SimpleRouter {
 
     constructor(server) {
         this.server = server;
+        this.middle = [];
         this.server.routes = [];
         this.server._server.on('request', (req, res) => {
+            for (const mw of this.middle)
+                mw(req, res);
             for (const [pattern, fn] of this.server.routes)
                 if (pattern.exec(req.url))
                     return fn(req, res);
@@ -11,8 +14,11 @@ class SimpleRouter {
     }
 
     add(r, handler) {
-        const regex = new RegExp(r);
-        this.server.routes.push([regex, handler]);
+        this.server.routes.push([new RegExp(r), handler]);
+    }
+
+    use(mw) {
+        this.middle.push(mw);
     }
 
 }

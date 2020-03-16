@@ -9,7 +9,4 @@ function handleSignals(server) {
         });
     }
 }
-
-module.exports = {
-    handleSignals
-};
+module.exports = { handleSignals };
