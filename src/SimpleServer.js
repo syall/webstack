@@ -2,15 +2,15 @@ class SimpleServer {
 
     constructor(config) {
         this._config = config;
-        if (this._config.SSL === undefined) {
-            this._server = require('http').createServer();
-        } else {
+        if (this._config.SSL) {
             const { readFileSync } = require('fs');
             const args = {
                 key: readFileSync(`${this._config.SSL}.key`),
                 cert: readFileSync(`${this._config.SSL}.cert`)
             };
             this._server = require('https').createServer(args);
+        } else {
+            this._server = require('http').createServer();
         }
     }
 
@@ -25,8 +25,7 @@ class SimpleServer {
     }
 
     close(fn) {
-        this._server.close();
-        fn();
+        this._server.close(fn);
     }
 
 }
