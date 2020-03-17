@@ -8,7 +8,8 @@ class SimpleRouter {
             const data = [];
             req.on('data', chunk => data.push(chunk));
             req.on('end', _ => {
-                req.data = data;
+                if (data.length !== 0)
+                    req.data = data;
                 for (const [regex, handler] of this.routes)
                     if (regex.exec(req.url))
                         handler(req, res);
